@@ -1,0 +1,37 @@
+{
+    "type": "challenge",
+    "challengeSubType": "reading",
+    "title": "Leitura: Pitágoras e o Teorema",
+    "area": "Matemática",
+    "year": 2024,
+    "timeLimit": 30,
+    "readingContent": "# O Teorema de Pitágoras\n\nO matemático grego Pitágoras descobriu uma das relações mais importantes da geometria. Em um triângulo retângulo, o quadrado da hipotenusa é igual à soma dos quadrados dos catetos.\n\nEm linguagem matemática:\n\n$$a^2 + b^2 = c^2$$\n\nOnde:\n- $a$ e $b$ são os catetos (lados menores)\n- $c$ é a hipotenusa (lado maior, oposto ao ângulo reto)\n\n## Exemplo Prático\n\nSe um triângulo retângulo tem catetos de 3 cm e 4 cm, qual é a hipotenusa?\n\n$$3^2 + 4^2 = c^2$$\n$$9 + 16 = c^2$$\n$$25 = c^2$$\n$$c = 5$$\n\nPortanto, a hipotenusa mede 5 cm.",
+    "questions": [
+        {
+            "text": "Segundo o texto, qual é a fórmula do Teorema de Pitágoras?",
+            "options": [
+                "$a^2 + b^2 = c^2$",
+                "$a + b = c$",
+                "$a \\times b = c$",
+                "$a^2 - b^2 = c^2$"
+            ],
+            "correctIndex": 0,
+            "explanation": "A fórmula correta é $a^2 + b^2 = c^2$, como explicado no texto.",
+            "discipline": "Matemática",
+            "difficulty": "Fácil"
+        },
+        {
+            "text": "No exemplo do texto, qual é o valor da hipotenusa quando os catetos medem 3 cm e 4 cm?",
+            "options": [
+                "5 cm",
+                "7 cm",
+                "12 cm",
+                "25 cm"
+            ],
+            "correctIndex": 0,
+            "explanation": "Aplicando o teorema: $3^2 + 4^2 = 9 + 16 = 25$, logo $c = \\sqrt{25} = 5$ cm",
+            "discipline": "Matemática",
+            "difficulty": "Médio"
+        }
+    ]
+}

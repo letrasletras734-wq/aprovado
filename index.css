@@ -1,0 +1,128 @@
+/* Academic styles for LaTeX rendered content */
+.academic-style {
+  line-height: 1.7;
+}
+
+.academic-style p {
+  text-align: justify;
+  margin-bottom: 1.25rem;
+}
+
+.academic-style h1 {
+  letter-spacing: -0.025em;
+}
+
+.academic-style h2 {
+  letter-spacing: -0.02em;
+}
+
+.academic-style ul,
+.academic-style ol {
+  margin-bottom: 1.25rem;
+}
+
+.academic-style li {
+  margin-bottom: 0.5rem;
+}
+
+.academic-style blockquote {
+  position: relative;
+}
+
+/* Ensure KaTeX displays nicely */
+.academic-style .katex-display {
+  margin: 1.5rem 0 !important;
+  padding: 0.5rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.academic-style .katex {
+  font-size: 1.1em;
+}
+
+/* Custom scrollbar for math blocks */
+.academic-style .katex-display::-webkit-scrollbar {
+  height: 4px;
+}
+
+.academic-style .katex-display::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.academic-style .katex-display::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.dark .academic-style .katex-display::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Global Heading Fixes for Mobile */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+@media (max-width: 640px) {
+  .text-3xl {
+    font-size: 1.5rem;
+    /* 24px */
+    line-height: 2rem;
+  }
+
+  .text-4xl {
+    font-size: 1.875rem;
+    /* 30px */
+    line-height: 2.25rem;
+  }
+
+  .text-5xl {
+    font-size: 2.25rem;
+    /* 36px */
+    line-height: 2.5rem;
+  }
+}
+
+/* Slow pulse animation for urgent notifications */
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Infinite scroll animation for tips */
+@keyframes infinite-scroll-proper {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-100% - 1rem));
+  }
+}
+
+.animate-infinite-scroll-proper {
+  animation: infinite-scroll-proper 15s linear infinite;
+}
+
+.animate-infinite-scroll-proper:hover {
+  animation-play-state: paused;
+}
