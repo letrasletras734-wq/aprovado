@@ -22,12 +22,28 @@ const APP_VERSION = '2.0.0'; // Version change forces localStorage cleanup
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoadingSession, setIsLoadingSession] = useState(true); // Novo: estado de loading
+  const [isLoadingSession, setIsLoadingSession] = useState(true);
   const [userRole, setUserRole] = useState<UserRole>('user');
-  const [currentView, setCurrentView] = useState(() => localStorage.getItem('currentView') || 'dashboard');
+  const [errorStatus, setErrorStatus] = useState<string | null>(null);
+
+  // Safe localStorage initialization
+  const [currentView, setCurrentView] = useState(() => {
+    try {
+      return localStorage.getItem('currentView') || 'dashboard';
+    } catch (e) {
+      console.warn('Error reading currentView from localStorage', e);
+      return 'dashboard';
+    }
+  });
+
   const [navigationHistory, setNavigationHistory] = useState<string[]>(() => {
-    const saved = localStorage.getItem('navigationHistory');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('navigationHistory');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      console.warn('Error reading navigationHistory from localStorage', e);
+      return [];
+    }
   });
   const [isAdminDesktopMode, setIsAdminDesktopMode] = useState(true); // Default to true for admin productivity
 
@@ -42,22 +58,43 @@ const App: React.FC = () => {
   const [dbConnectionError, setDbConnectionError] = useState(false);
 
   useEffect(() => {
-    // Para usuários normais, verificar sessão no Supabase
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('🔐 Sessão recuperada:', session?.user?.id || 'Nenhuma sessão ativa');
-      setIsAuthenticated(!!session);
-      if (session?.user) {
-        fetchProfile(session.user.id).then((exists) => {
-          console.log('👤 Perfil carregado após check de sessão:', exists ? 'Sucesso' : 'Falha/Não existe');
+    console.log('🚀 Iniciando App...');
+
+    // Check Supabase config
+    if (!supabase) {
+      console.error('❌ Supabase client not initialized');
+      setErrorStatus('Supabase: Erro crítico na inicialização do cliente.');
+      setIsLoadingSession(false);
+      return;
+    }
+
+    const checkSession = async () => {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+
+        if (error) {
+          console.error('❌ Erro Supabase Auth:', error);
+          setErrorStatus(`Supabase Auth: ${error.message}`);
           setIsLoadingSession(false);
-        });
-      } else {
-        setIsLoadingSession(false); // Terminou de verificar sessão (sem usuário)
+          return;
+        }
+
+        console.log('🔐 Sessão recuperada:', session?.user?.id || 'Nenhuma sessão ativa');
+        setIsAuthenticated(!!session);
+
+        if (session?.user) {
+          const exists = await fetchProfile(session.user.id);
+          console.log('👤 Perfil carregado após check de sessão:', exists ? 'Sucesso' : 'Falha/Não existe');
+        }
+      } catch (err: any) {
+        console.error('❌ Erro crítico ao verificar sessão:', err);
+        setErrorStatus(`Erro de Inicialização: ${err.message || 'Erro desconhecido'}`);
+      } finally {
+        setIsLoadingSession(false);
       }
-    }).catch(err => {
-      console.error('❌ Erro crítico ao verificar sessão:', err);
-      setIsLoadingSession(false); // Liberar loading mesmo com erro
-    });
+    };
+
+    checkSession();
 
     // Listen for auth changes
     const {
@@ -2375,8 +2412,37 @@ const App: React.FC = () => {
   const isSimulado = currentView === 'simulado-run';
   const showNav = !isSimulado && currentView !== 'ranking-detail' && currentView !== 'admin-panel' && (currentUserAccount?.onboardingCompleted || userRole === 'admin');
 
+  if (errorStatus) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen w-screen p-8 bg-brand-light dark:bg-gray-900 text-center">
+        <div className="p-1 min-w-[300px] max-w-md bg-white dark:bg-gray-800 rounded-3xl shadow-neu border-2 border-red-500/20">
+          <div className="p-8 space-y-4">
+            <div className="w-16 h-16 mx-auto bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+              <ShieldCheck size={32} className="text-red-500" />
+            </div>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">Algo deu errado</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Não foi possível estabilizar a conexão com o servidor. Verifique as configurações de ambiente (Vercel) e o banco de dados.
+            </p>
+            <div className="p-4 bg-gray-50 dark:bg-black/20 rounded-2xl text-left">
+              <p className="text-xs font-mono text-red-600 break-all leading-relaxed">
+                ERRO: {errorStatus}
+              </p>
+            </div>
+            <button
+              onClick={() => window.location.reload()}
+              className="w-full py-3 bg-brand-purple text-white rounded-2xl font-bold hover:scale-[1.02] active:scale-[0.98] transition-all"
+            >
+              Tentar Novamente
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-[#F0F0F7] dark:bg-gray-900 min-h-screen font-sans flex justify-center transition-all duration-300">
+    <div className={`app-root min-h-[100dvh] flex flex-col items-center justify-center transition-colors duration-300 ${isDarkMode ? 'dark bg-gray-900' : 'bg-[#F0F0F7]'}`}>
       <div className={`w-full ${currentView === 'admin-panel' && isAdminDesktopMode ? '' : 'max-w-md'} bg-[#F0F0F7] dark:bg-gray-900 h-[100dvh] flex flex-col relative`}>
 
         {/* Back Button - Omit for views that provide their own header navigation */}
