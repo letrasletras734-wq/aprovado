@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Trash2, RotateCcw, X, AlertTriangle, Sun, Moon, ShieldCheck, Trophy, Phone, Copy, MessageCircle, FileText } from 'lucide-react';
+import { Trash2, RotateCcw, X, AlertTriangle, Sun, Moon, ShieldCheck, Trophy, Phone, Copy, MessageCircle, FileText, Users, ArrowRight } from 'lucide-react';
 import { UserAccount, UserStats, UserRole, ExamAccessRecord, OfficialExam } from '../../types';
 import { Button } from '../Button';
 import { getUserLevel, getNextLevel, getLevelProgress } from '../../constants';
@@ -240,6 +239,27 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                     </div>
                 </div>
             )}
+
+            {/* WhatsApp Group Button */}
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-indigo-900/20 dark:to-blue-900/20 border border-blue-200 dark:border-indigo-800 rounded-2xl p-5">
+                <a
+                    href="https://chat.whatsapp.com/BYvje9O3s9w7qUwwK6tRm4?mode=gi_t"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-between group hover:scale-[1.02] transition-transform"
+                >
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
+                            <Users size={24} className="text-white" />
+                        </div>
+                        <div className="text-left">
+                            <p className="font-bold text-brand-dark dark:text-white">Grupo de Estudos</p>
+                            <p className="text-xs text-indigo-700 dark:text-indigo-400">Comunidade • WhatsApp</p>
+                        </div>
+                    </div>
+                    <ArrowRight size={20} className="text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform" />
+                </a>
+            </div>
 
             {/* Support Contact Button */}
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-5">
