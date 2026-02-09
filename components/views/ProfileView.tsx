@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { Trash2, RotateCcw, X, AlertTriangle, Sun, Moon, ShieldCheck, Trophy, Phone, Copy, MessageCircle, FileText, Users, ArrowRight } from 'lucide-react';
 import { UserAccount, UserStats, UserRole, ExamAccessRecord, OfficialExam } from '../../types';
 import { Button } from '../Button';
